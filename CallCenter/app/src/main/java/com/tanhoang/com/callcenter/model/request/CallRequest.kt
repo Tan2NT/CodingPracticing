@@ -39,7 +39,7 @@ class CallRequest(
 
     fun printLog() {
         val employeePath = processedEmployees.toString()
-        Log.d("TDebug", "[request ${id}-${targetRole.name}]: is handled SUCCESSFULLY by ${processedEmployees.size} employee ids $employeePath")
-        //println("T[request ${id}-${targetRole.name}]: is handled SUCCESSFULLY by employee id $employeePath")
+        // Log.d("TDebug", "[request ${id}-${targetRole.name}]: is handled SUCCESSFULLY by ${processedEmployees.size} employee ids $employeePath")
+        System.out.println("[request ${id}-${targetRole.name}]: is handled SUCCESSFULLY by ${processedEmployees.size} employee ids $employeePath")
     }
 }

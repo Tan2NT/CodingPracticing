@@ -64,6 +64,7 @@ class ExampleUnitTest {
         )
 
         for (call in calls) {
+            Utils.sleep(100L)
             callProcess.receiveCall(call)
         }
 

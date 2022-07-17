@@ -57,9 +57,9 @@ class CallProcessor(
 
     private fun getUnCompletedCallByEmployeeRole(employeeRole: Role): CallRequest? {
         return when (employeeRole) {
-            Role.RESPONDENT -> respondentRequests.pollLast()
-            Role.MANAGER -> managerRequests.pollLast()
-            Role.DIRECTOR -> directorRequests.pollLast()
+            Role.RESPONDENT -> respondentRequests.pollFirst()
+            Role.MANAGER -> managerRequests.pollFirst()
+            Role.DIRECTOR -> directorRequests.pollFirst()
         }
     }
 
@@ -84,7 +84,7 @@ class CallProcessor(
     private fun markRequestAsCompleted(call: CallRequest) {
         call.printLog()
         handledRequests.add(call.getId())
-        Log.d("TDebug", "completed requests: ${handledRequests.toString()}")
+        System.out.println("[${handledRequests.size}] requests completed: ${handledRequests.toString()}")
     }
 
     private fun pushCallInQueue(request: CallRequest) {
