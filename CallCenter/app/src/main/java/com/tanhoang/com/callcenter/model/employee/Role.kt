@@ -1,4 +1,4 @@
-package com.tanhoang.com.model.employee
+package com.tanhoang.com.callcenter.model.employee
 
 enum class Role(val role: Int) {
     RESPONDENT(1),

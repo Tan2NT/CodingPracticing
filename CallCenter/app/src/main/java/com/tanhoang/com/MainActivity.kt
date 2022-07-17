@@ -2,10 +2,10 @@ package com.tanhoang.com
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.tanhoang.com.model.employee.Employee
-import com.tanhoang.com.model.employee.Role
-import com.tanhoang.com.model.request.CallRequest
-import com.tanhoang.com.service.CallProcessor
+import com.tanhoang.com.callcenter.model.employee.Employee
+import com.tanhoang.com.callcenter.model.employee.Role
+import com.tanhoang.com.callcenter.model.request.CallRequest
+import com.tanhoang.com.callcenter.service.CallProcessor
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
@@ -13,11 +13,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        processCalls()
+        testCalls()
     }
 
-    private fun processCalls() {
-
+    private fun testCalls() {
         val respondents = listOf(
             Employee("1", "A", Role.RESPONDENT),
             Employee("2", "B", Role.RESPONDENT),
@@ -65,8 +64,6 @@ class MainActivity : AppCompatActivity() {
         for (call in calls) {
             callProcess.receiveCall(call)
         }
-
-        callProcess.execute()
     }
 }
 
