@@ -29,8 +29,6 @@ class CallProcessor(
         // find out if is there any employee is freeing now
         val employee = getRequestExecutorByRequestLevel(call.nextProcessesRole)
         if (employee!= null) {
-            // process a call on a separate thread
-            employee.setStatus(EmployeeStatus.BUSY)
             processCall(employee, call)
         } else {
             // there is no freeing employee, so let handle it later
@@ -51,6 +49,7 @@ class CallProcessor(
     }
 
     private fun processCall(employee: Employee, call: CallRequest) {
+        employee.setStatus(EmployeeStatus.BUSY)
         val succeed = employee.processCall(call)
         handleProcessedRequestResult(employee, succeed, call)
     }
