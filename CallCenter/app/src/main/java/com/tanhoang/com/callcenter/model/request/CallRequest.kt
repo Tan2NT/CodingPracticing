@@ -1,6 +1,5 @@
 package com.tanhoang.com.callcenter.model.request
 
-import android.util.Log
 import com.tanhoang.com.callcenter.model.employee.Role
 import java.util.*
 
@@ -10,14 +9,17 @@ import java.util.*
 class CallRequest(
     private val id: String,
     private val message: String,
-    val targetRole: Role = Role.RESPONDENT,
-    var nextProcessesRole: Role = Role.RESPONDENT,
+    private val targetRole: Role = Role.RESPONDENT,
+    private var processesRole: Role = Role.RESPONDENT,
 ) {
     private var status: RequestStatus = RequestStatus.NOT_HANDLED
 
     private val processedEmployees = Vector<String>()
 
     fun getId() = id
+    fun getTargetRole() = targetRole
+    fun getProcessesRole() = processesRole
+    fun setProcessesRole(newRole: Role) { processesRole = newRole }
 
     fun completeCall(success: Boolean, employeeId: String) {
         if (success) {
@@ -34,12 +36,11 @@ class CallRequest(
     }
 
     private fun setNextProcessRole() {
-        nextProcessesRole = Role.fromInt(nextProcessesRole.role + 1)
+        processesRole = Role.fromInt(processesRole.role + 1)
     }
 
     fun printLog() {
         val employeePath = processedEmployees.toString()
-        // Log.d("TDebug", "[request ${id}-${targetRole.name}]: is handled SUCCESSFULLY by ${processedEmployees.size} employee ids $employeePath")
-        System.out.println("[request ${id}-${targetRole.name}]: is handled SUCCESSFULLY by ${processedEmployees.size} employee ids $employeePath")
+        System.out.println("[request $id-${targetRole.name}]: is handled SUCCESSFULLY by ${processedEmployees.size} employee ids $employeePath")
     }
 }

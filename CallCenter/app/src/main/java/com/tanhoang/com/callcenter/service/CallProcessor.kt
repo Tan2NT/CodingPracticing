@@ -1,6 +1,5 @@
 package com.tanhoang.com.callcenter.service
 
-import android.util.Log
 import com.tanhoang.com.callcenter.model.employee.Employee
 import com.tanhoang.com.callcenter.model.employee.EmployeeStatus
 import com.tanhoang.com.callcenter.model.employee.Role
@@ -9,6 +8,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.*
+import kotlin.NoSuchElementException
 
 class CallProcessor(
     private val respondents: LinkedList<Employee>,
@@ -25,10 +25,10 @@ class CallProcessor(
     /**
      *  This function runs on a separate thread
      */
-    fun receiveCall(call: CallRequest) = CoroutineScope(Dispatchers.Default).launch  {
+    fun receiveCall(call: CallRequest) = CoroutineScope(Dispatchers.Default).launch {
         // find out if is there any employee is freeing now
-        val employee = getRequestExecutorByRequestLevel(call.nextProcessesRole)
-        if (employee!= null) {
+        val employee = getRequestExecutorByRequestLevel(call.getProcessesRole())
+        if (employee != null) {
             processCall(employee, call)
         } else {
             // there is no freeing employee, so let handle it later
@@ -65,11 +65,10 @@ class CallProcessor(
     private fun handleProcessedRequestResult(employee: Employee, succeed: Boolean, call: CallRequest) {
         if (!succeed) {
             // find the higher lever employee to process the uncompleted or push it into a queue
-            getRequestExecutorByRequestLevel(call.nextProcessesRole)?.let { newEmployee ->
+            getRequestExecutorByRequestLevel(call.getProcessesRole())?.let { newEmployee ->
                 processCall(newEmployee, call)
             } ?: pushCallInQueue(call)
-        }
-        else {
+        } else {
             // Complete the succeed call
             markRequestAsCompleted(call)
         }
@@ -83,11 +82,11 @@ class CallProcessor(
     private fun markRequestAsCompleted(call: CallRequest) {
         call.printLog()
         handledRequests.add(call.getId())
-        System.out.println("[${handledRequests.size}] requests completed: ${handledRequests.toString()}")
+        System.out.println("[${handledRequests.size}] requests completed: $handledRequests")
     }
 
     private fun pushCallInQueue(request: CallRequest) {
-        when (request.nextProcessesRole) {
+        when (request.getProcessesRole()) {
             Role.RESPONDENT -> respondentRequests.add(request)
             Role.MANAGER -> managerRequests.add(request)
             Role.DIRECTOR -> directorRequests.add(request)
