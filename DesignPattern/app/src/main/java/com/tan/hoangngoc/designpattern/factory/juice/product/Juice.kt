@@ -1,11 +1,11 @@
 package com.tan.hoangngoc.designpattern.factory.juice.product
 
-open class Juice (
+open abstract class Juice (
     private val name: String,
-    private val gradients: ArrayList<String>
+    protected val ingredients: ArrayList<String>
 ) {
 
-    fun prepare() { println("----- prepare for $name -----") }
+    abstract fun prepare()
 
     fun make() { println("----- making the juice -----") }
 
